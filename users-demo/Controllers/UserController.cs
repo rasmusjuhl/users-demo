@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using users_demo.Models;
+using users_demo.Repositories;
+
+namespace users_demo.Controllers
+{
+    [ApiController]
+    [Route("users")]
+    public class UserController : ControllerBase
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private readonly ILogger<UserController> _logger;
+
+        private readonly IUserRepository _userRepository;
+
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        {
+            _logger = logger;
+            _userRepository = userRepository;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _userRepository.GetAllUsers();
+
+            return users;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<User> GetUser(int id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            return user;
+        }
+    }
+}
