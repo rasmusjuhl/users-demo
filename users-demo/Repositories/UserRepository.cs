@@ -23,16 +23,7 @@ namespace users_demo.Repositories
         {
             get
             {
-                //TODO: Fix secrets in source
-                var builder = new MySqlConnectionStringBuilder()
-                {
-                    UserID = "root",
-                    Password = ";ZTdtnhns83DfdGAxdz6T]nRFbZf.2b(>g=8k^EbLM2i$ek3hXTod&vV(C264WbU",
-                    Server = "127.0.0.1",
-                    Database = "users_demo"
-                };
-
-                return new MySqlConnection(builder.ConnectionString);
+                return new MySqlConnection(_configuration.GetConnectionString("MySQL"));
             }
         }
 
