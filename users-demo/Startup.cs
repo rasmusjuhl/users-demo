@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using users_demo.Middleware;
 using users_demo.Repositories;
 
 namespace users_demo
@@ -26,6 +27,10 @@ namespace users_demo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Customer response timer middleware
+            // See RequestTimerMiddlewareExtensions.cs
+            app.UseResponseTimer();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
