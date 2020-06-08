@@ -45,7 +45,7 @@ namespace users_demo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser(User user)
+        public ActionResult CreateUser(User user)
         {
             var result = _userRepository.CreateUser(user);
 
