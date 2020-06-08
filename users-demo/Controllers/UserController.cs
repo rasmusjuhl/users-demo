@@ -32,11 +32,16 @@ namespace users_demo.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<User> GetUser(int id)
+        public async Task<ActionResult> GetUser(int id)
         {
             var user = await _userRepository.GetUserById(id);
 
-            return user;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
 
         [HttpPost]
