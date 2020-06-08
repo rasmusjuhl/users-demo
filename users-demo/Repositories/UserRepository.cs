@@ -23,6 +23,7 @@ namespace users_demo.Repositories
         {
             get
             {
+                //TODO: Fix secrets in source
                 var builder = new MySqlConnectionStringBuilder()
                 {
                     UserID = "root",
@@ -56,6 +57,48 @@ namespace users_demo.Repositories
                 connection.Open();
                 var result = await connection.QueryAsync<User>(query, new { id = id });
                 return result.FirstOrDefault();
+            }
+        }
+
+        public bool CreateUser(User user)
+        {
+            using (IDbConnection connection = Connection)
+            {
+                string query = @"INSERT INTO users (initials, name)
+                                 VALUES (@initials, @name)";
+
+                connection.Open();
+                var result = connection.Execute(query, new { initials = user.Initials, name = user.Name });
+
+                return result == 1;
+            }
+        }
+
+        public bool UpdateUser(User user)
+        {
+            using (IDbConnection connection = Connection)
+            {
+                string query = @"UPDATE users
+                                 SET initials = @initials, name = @name
+                                 WHERE id = @id";
+
+                connection.Open();
+                var result = connection.Execute(query, new { initials = user.Initials, name = user.Name, id = user.Id });
+
+                return result == 1;
+            }
+        }
+
+        public bool DeleteUser(int id)
+        {
+            using (IDbConnection connection = Connection)
+            {
+                string query = @"DELETE FROM users WHERE id = @id";
+
+                connection.Open();
+                var result = connection.Execute(query, new { id = id });
+
+                return result == 1;
             }
         }
     }

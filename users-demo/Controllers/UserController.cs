@@ -13,11 +13,6 @@ namespace users_demo.Controllers
     [Route("users")]
     public class UserController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<UserController> _logger;
 
         private readonly IUserRepository _userRepository;
@@ -42,6 +37,47 @@ namespace users_demo.Controllers
             var user = await _userRepository.GetUserById(id);
 
             return user;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(User user)
+        {
+            var result = _userRepository.CreateUser(user);
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(int id, User user)
+        {
+            var existingUser = await _userRepository.GetUserById(id);
+
+            if  (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            existingUser.Initials = user.Initials;
+            existingUser.Name = user.Name;
+
+            _userRepository.UpdateUser(existingUser);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var existingUser = await _userRepository.GetUserById(id);
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            _userRepository.DeleteUser(id);
+
+            return Ok();
         }
     }
 }

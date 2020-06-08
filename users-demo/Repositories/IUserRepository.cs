@@ -9,5 +9,9 @@ namespace users_demo.Repositories
     {
         Task<User> GetUserById(int id);
         Task<List<User>> GetAllUsers();
+        //TODO: Async CreateUser?
+        bool CreateUser(User user);
+        bool UpdateUser(User user);
+        bool DeleteUser(int id);
     }
 }
